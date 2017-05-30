@@ -1,6 +1,11 @@
 #include "alsmap.h"
 
+#ifdef USE_PRIMES
+#define INITIAL_SIZE 7
+#else
 #define INITIAL_SIZE 8
+#endif
+
 #define INITIAL_RANGE 4
 
 // Table's growth policies
@@ -18,6 +23,11 @@
 
 #define min(x, y) ((x<y)? x:y)
 #define max(x, y) ((x>y)? x:y)
+
+#ifdef USE_PRIMES
+size_t primes[] = {7, 17, 31, 61, 127, 257, 509, 1021, 2053, 4099, 8191, 16381, 32771, 65537, 131071, 262147, 524287};
+#endif
+
 
 // Private functions
 static void resizeTable(ALSHashMap* self, size_t newsize);
@@ -410,8 +420,19 @@ static void resizeTable(ALSHashMap* self, size_t newsize){
 	size_t T = self->T;
 	
 	// reset values and allocate new table
-	if (newsize > T) self->R++;
-	else self->R--;
+	if (newsize > T){
+		self->R++;
+		newsize = self->T*2;
+	}
+	else{
+		self->R--;
+		newsize = self->T/2;
+	}
+	
+	#ifdef USE_PRIMES
+	newsize = primes[self->R - INITIAL_RANGE];
+	#endif
+	
 	self->MA = 0;
 	self->CRC = 0;
 	self->NA = 0;

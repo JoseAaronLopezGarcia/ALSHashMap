@@ -1,11 +1,20 @@
 #ifndef ALS_HASHMAP
 #define ALS_HASHMAP
 
+
 /* CONFIG OPTIONS */
-// use binary search tree
+
+/* use binary search tree */
 //#define USE_TREE
+
+/* use extended probing */
 //#define EXTENDED_PROBING
+
+/* use unified auxiliary structure */
 //#define UNIQUE_AUX
+
+/* use prime table sizes */
+//#define USE_PRIMES
 
 #ifdef __cplusplus
 extern "C"{
